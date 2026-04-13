@@ -22,7 +22,7 @@ docker-compose up
 
 After running these commmands, these urls are available:
 
-- http://localhost:7080/availability — availability form (port changed, see note below)
+- http://localhost:7080/availability — availability form
 - http://localhost:7001/ phpMyAdmin
 
 ## Implementation notes
