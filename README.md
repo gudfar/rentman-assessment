@@ -29,19 +29,14 @@ After running these commmands, these urls are available:
 
 ### Approach
 
-Both methods are built around the **sweep line algorithm**. Instead of checking every point
-in time, we collect two events per planning entry — a `+quantity` at `start` and a `-quantity`
-at `end` — sort them by timestamp, and walk through them to find the peak concurrent load.
+Both methods use the **sweep line algorithm**: convert planning entries into `+quantity` at
+start and `-quantity` at end events, sort by time, and walk through to find peak concurrent
+load. O(n log n) vs O(n²) for naive pairwise comparison.
 
-This gives O(n log n) complexity where n is the number of overlapping planning entries,
-instead of O(n²) for a naive pairwise comparison.
+**`isAvailable`** — returns `true` if `peak_load + quantity <= stock` for the given equipment.
 
-**`isAvailable`** fetches all planning entries for the requested equipment that overlap the
-timeframe, finds the peak load, and returns `true` if `peak + requested_quantity <= stock`.
-
-**`getShortages`** fetches all equipment with overlapping planning entries in a single query,
-groups by equipment, and for each calculates the peak load. Only equipment where
-`peak > stock` is included in the result, with the shortage as a negative value.
+**`getShortages`** — single query for all equipment, groups by id, returns only those where
+`peak_load > stock` as `[id => stock - peak_load]` (negative value).
 
 ### Database index
 
